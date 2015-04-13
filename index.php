@@ -10,6 +10,7 @@ $t = retrieveAddressForToken();
 $can_see = isset($t['results']['paid']) ? $t['results']['paid'] : false;
 $address = isset($t['results']['address']) ? $t['results']['address'] : '';
 $required_btc = isset($t['results']['required_btc']) ? $t['results']['required_btc'] : '';
+$required_confirmations = isset($t['results']['required_confirmations']) ? $t['results']['required_confirmations'] : '';
 
 ?>
 <!doctype html>
@@ -20,6 +21,7 @@ $required_btc = isset($t['results']['required_btc']) ? $t['results']['required_b
         <script type="text/javascript">
             var address = "<?php echo $address; ?>"
             var required_btc = "<?php echo $required_btc; ?>"
+            var required_confirmations = "<?php echo $required_confirmations; ?>"
         </script>
 
         <script src="assets/js/qrcode_lib.js"></script>
@@ -27,6 +29,8 @@ $required_btc = isset($t['results']['required_btc']) ? $t['results']['required_b
         <script src="assets/js/angular.min.js"></script>
         <script src="assets/js/app.js"></script>
         <script src="assets/js/qrcode.js"></script>
+
+	<title>Coinbee Demo</title>
     </head>
     <body ng-cloak>
     <?php
@@ -48,6 +52,7 @@ $required_btc = isset($t['results']['required_btc']) ? $t['results']['required_b
                 <p>Once we tell you via an API request that the user's paid, it's up to you to decide how long the user can access the current piece of content, or to even allow them to consume other content (like a day pass)</p>
                 <p>Utilizing a user identifier on address generation allows accidental page reloads to not lose a user's address or payments. Also useful for reporting on your site</p>
                 <p>Click the button below and send bitcoin to the generated unique address to access the locked content on this page.</p>
+                <p>Want to see how this all works? <a href="https://github.com/coinbee/poc.coinbee.io" target="_blank">Explore the source</a>.</p>
             </div>
 
             <div class="text-center">
@@ -62,7 +67,7 @@ $required_btc = isset($t['results']['required_btc']) ? $t['results']['required_b
                 </div>
                 <div ng-show="address != ''">
                     <!-- step 8, show the data to the user -->
-                    <h3>Please send "{{required_btc}}" bitcoins to address<br>"{{address}}" in order to unlock this content<br>
+                    <h3>Please send at least "{{required_btc}}" bitcoins to address<br>"{{address}}" in order to unlock this content<br>
                     <small>Once payment is received you will be redirected automatically, no need to refresh the page</small></h3>
                     <qrcode size="200" data="{{address}}"></qrcode>
                     <div ng-show="showAddressCheckerLoader">
